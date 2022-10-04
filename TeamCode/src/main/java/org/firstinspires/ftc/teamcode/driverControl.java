@@ -32,6 +32,9 @@ public class driverControl extends LinearOpMode {
 
         //double check which motors are reversed, assumption is right-side
 
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         telemetry.addData("motors reversed", "hehe");
         telemetry.addData("Status", "Initialized");
