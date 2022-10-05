@@ -31,13 +31,12 @@ public class driverControl extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
 
         //double check which motors are reversed, assumption is right-side
-
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
-        telemetry.addData("motors reversed", "hehe");
-        telemetry.addData("Status", "Initialized");
+
+        telemetry.addData("test","updated");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
