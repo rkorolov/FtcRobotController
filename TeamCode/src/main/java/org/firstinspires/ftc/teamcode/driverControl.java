@@ -37,6 +37,7 @@ public class driverControl extends LinearOpMode {
 
         
         telemetry.addData("test","updated");
+        telemetry.addData("test22","updated");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
@@ -45,6 +46,11 @@ public class driverControl extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("Status", "Running");
 
+
+            // Things to Change;
+            //strafe is broken right now, the wheels aren't greased
+
+            //Original Code
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
@@ -65,11 +71,11 @@ public class driverControl extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-
-            frontRight.setPower(frontRightPower);
-            frontLeft.setPower(frontLeftPower);
-            backRight.setPower(backRightPower);
-            backLeft.setPower(backLeftPower);
+            //*0.5 to set more reasonable speed
+            frontRight.setPower(frontRightPower*0.5);
+            frontLeft.setPower(frontLeftPower*0.5);
+            backRight.setPower(backRightPower*0.5);
+            backLeft.setPower(backLeftPower*0.5);
 
             //last line
             telemetry.update();
