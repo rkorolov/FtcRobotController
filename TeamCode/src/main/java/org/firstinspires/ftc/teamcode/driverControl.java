@@ -35,7 +35,7 @@ public class driverControl extends LinearOpMode {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
-        
+
         telemetry.addData("test","updated");
         telemetry.addData("Status", "Initialized");
         telemetry.update();
