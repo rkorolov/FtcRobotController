@@ -9,6 +9,8 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.openftc.easyopencv.OpenCvCamera;
+
 @TeleOp
 public class driverControl extends LinearOpMode {
 
@@ -18,7 +20,8 @@ public class driverControl extends LinearOpMode {
     private DcMotor backRight;
     private DcMotor backLeft;
 
-    //init sensors
+    //init sensors/camera
+    OpenCvCamera camera;
 
 
     @Override

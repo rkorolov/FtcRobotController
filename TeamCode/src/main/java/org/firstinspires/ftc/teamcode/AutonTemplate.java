@@ -23,6 +23,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
@@ -36,6 +37,10 @@ import java.util.ArrayList;
 public class AutonTemplate extends LinearOpMode
 {   
     //INTRODUCE VARIABLES HERE
+    private DcMotor frontRight;
+    private DcMotor frontLeft;
+    private DcMotor backRight;
+    private DcMotor backLeft;
 
 
     OpenCvCamera camera;
@@ -100,6 +105,7 @@ public class AutonTemplate extends LinearOpMode
         while (!isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
+            String direction;
 
             if(currentDetections.size() != 0)
             {
@@ -119,6 +125,21 @@ public class AutonTemplate extends LinearOpMode
                 {
                     telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
+
+
+                    //send detection info to movement commands
+                    if (tagOfInterest.id == LEFT) {
+                        moveToSpot("left");
+                    }
+                    else if (tagOfInterest.id == RIGHT) {
+                        moveToSpot("right");
+                    }
+                    else if (tagOfInterest.id == MIDDLE) {
+                        moveToSpot("middle");
+                    }
+                    else {
+                        moveToSpot("error, tag id not found");
+                    }
                 }
                 else
                 {
@@ -134,6 +155,8 @@ public class AutonTemplate extends LinearOpMode
                         tagToTelemetry(tagOfInterest);
                     }
                 }
+
+
 
             }
             else
@@ -185,5 +208,21 @@ public class AutonTemplate extends LinearOpMode
         telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+    }
+    void moveToSpot(String dir) {
+        if (dir.equals("left")) {
+            telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
+        }
+        else if (dir.equals("right")) {
+            telemetry.addLine("The april tag found is 3, saying to park in the right parking spot");
+        }
+        //change to else after testing for any errors
+        else if (dir.equals("middle")) {
+            telemetry.addLine("The april tag found is 2, saying to park in the middle parking spot");
+        }
+        else {
+            System.out.println("Something went wrong, here is the string sent: ");
+            System.out.println(dir);
+        }
     }
 }
