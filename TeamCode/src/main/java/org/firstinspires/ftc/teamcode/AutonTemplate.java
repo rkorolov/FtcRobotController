@@ -56,6 +56,7 @@ public class AutonTemplate extends LinearOpMode
     double cx = 319.495;
     double cy = 242.502;
 
+
     // UNITS ARE METERS
     double tagsize = 0.166;
 
