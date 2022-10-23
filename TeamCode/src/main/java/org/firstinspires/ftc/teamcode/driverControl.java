@@ -24,6 +24,7 @@ public class driverControl extends LinearOpMode {
     OpenCvCamera camera;
 
 
+
     @Override
     public void runOpMode() {
 
@@ -37,17 +38,25 @@ public class driverControl extends LinearOpMode {
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        telemetry.addData("Starting at",  "%7d :%7d",
+                frontLeft.getCurrentPosition(),
+                backLeft.getCurrentPosition());
 
 
-        telemetry.addData("test","updated");
-        telemetry.addData("test22","updated");
-        telemetry.addData("Status", "Initialized");
         telemetry.update();
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             telemetry.addData("Status", "Running");
+
 
 
             // Things to Change;
@@ -81,6 +90,12 @@ public class driverControl extends LinearOpMode {
             backLeft.setPower(backLeftPower*0.5);
 
             //last line
+            telemetry.addData("At Position",  "%7d :%7d",
+                    frontLeft.getCurrentPosition(),
+
+                    backLeft.getCurrentPosition());
+
+            telemetry.update();
             telemetry.update();
         }
     }
