@@ -60,7 +60,7 @@ public class driverControl extends LinearOpMode {
 
 
             // Things to Change;
-            //strafe is broken right now, the wheels aren't greased
+            //
 
             //Original Code
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
@@ -71,7 +71,7 @@ public class driverControl extends LinearOpMode {
 
 
 
-            //test this code to see if it works, then make it so diagonal strafing isn't possible
+            
 
 
             // Denominator is the largest motor power (absolute value) or 1
@@ -95,7 +95,10 @@ public class driverControl extends LinearOpMode {
 
                     backLeft.getCurrentPosition());
 
-            telemetry.update();
+            telemetry.addData("Speed", "%7d",
+                    frontRight.getPower(),
+                    backRight.getPower()
+                    );
             telemetry.update();
         }
     }
