@@ -35,6 +35,7 @@ public class driverControl extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
 
         //double check which motors are reversed, assumption is right-side
+        /*
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -44,9 +45,9 @@ public class driverControl extends LinearOpMode {
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        telemetry.addData("Starting at",  "%7d :%7d",
-                frontLeft.getCurrentPosition(),
-                backLeft.getCurrentPosition());
+         */
+
+        telemetry.addLine("Initialized");
 
 
         telemetry.update();

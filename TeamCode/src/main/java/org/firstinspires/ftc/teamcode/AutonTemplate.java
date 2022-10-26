@@ -75,6 +75,10 @@ public class AutonTemplate extends LinearOpMode
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -217,9 +221,12 @@ public class AutonTemplate extends LinearOpMode
     void moveToSpot(String dir) {
         if (dir.equals("left")) {
             telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
+
+
         }
         else if (dir.equals("right")) {
             telemetry.addLine("The april tag found is 3, saying to park in the right parking spot");
+
         }
         //change to else after testing for any errors
         else if (dir.equals("middle")) {
