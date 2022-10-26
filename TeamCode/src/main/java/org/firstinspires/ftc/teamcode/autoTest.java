@@ -175,9 +175,9 @@ public class autoTest extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
             frontRight.setPower(Math.abs(speed));
-            frontLeft.setPower(Math.abs(speed));
+            frontLeft.setPower(Math.abs(speed/2));
             backRight.setPower(Math.abs(speed));
-            backLeft.setPower(Math.abs(speed));
+            backLeft.setPower(Math.abs(speed/2));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
