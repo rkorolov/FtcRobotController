@@ -34,19 +34,36 @@ public class driverControl extends LinearOpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
 
+        double frontLeftPower;
+        double backLeftPower;
+        double frontRightPower;
+        double backRightPower;
+
+
         //double check which motors are reversed, assumption is right-side
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        /*
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         telemetry.addData("Starting at",  "%7d :%7d",
                 frontLeft.getCurrentPosition(),
-                backLeft.getCurrentPosition());
+                backLeft.getCurrentPosition(),
+                frontRight.getCurrentPosition(),
+                backRight.getCurrentPosition());
+
+         */
+
+
 
 
         telemetry.update();
@@ -70,18 +87,26 @@ public class driverControl extends LinearOpMode {
 
 
 
+            /*
+            if(gamepad1.a == true){
+                while(variable for posistion x > value for range || x < value for range){
+                    set power of wheels such that the robot will strafe left or right based on position
+                }
+                repeat while loop for y position
+            }
+            */
 
-            
+
 
 
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
             // at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower = (y + x + rx) / denominator;
-            double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
+             frontLeftPower = (y + x + rx) / denominator;
+             backLeftPower = (y - x + rx) / denominator;
+             frontRightPower = (y - x - rx) / denominator;
+             backRightPower = (y + x - rx) / denominator;
 
             //*0.5 to set more reasonable speed
             frontRight.setPower(frontRightPower*0.5);
@@ -93,12 +118,22 @@ public class driverControl extends LinearOpMode {
             telemetry.addData("At Position",  "%7d :%7d",
                     frontLeft.getCurrentPosition(),
 
-                    backLeft.getCurrentPosition());
+                    backRight.getCurrentPosition());
 
-            telemetry.addData("Speed", "%7d",
-                    frontRight.getPower(),
-                    backRight.getPower()
-                    );
+
+
+            telemetry.addData("Front Right Speed",
+                    frontRight.getPower());
+            telemetry.addData("Back Right Speed",
+                    backRight.getPower());
+            telemetry.addData("Front Left Speed",
+                    frontLeft.getPower());
+            telemetry.addData("Back Left Speed",
+                    backLeft.getPower());
+
+            telemetry.addLine("updated");
+
+
             telemetry.update();
         }
     }
