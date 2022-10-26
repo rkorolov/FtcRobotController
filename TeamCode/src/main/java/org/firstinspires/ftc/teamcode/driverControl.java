@@ -71,7 +71,7 @@ public class driverControl extends LinearOpMode {
 
 
 
-            
+
 
 
             // Denominator is the largest motor power (absolute value) or 1
