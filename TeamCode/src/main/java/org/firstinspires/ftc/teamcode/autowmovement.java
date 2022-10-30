@@ -34,8 +34,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @TeleOp
-public class AutonTemplate extends LinearOpMode
-{   
+public class autowmovement extends LinearOpMode
+{
     //INTRODUCE VARIABLES HERE
     private DcMotor frontRight;
     private DcMotor frontLeft;
@@ -60,8 +60,8 @@ public class AutonTemplate extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-     // Tag ID 1,2,3 from the 36h11 family 
-     /*EDIT IF NEEDED!!!*/
+    // Tag ID 1,2,3 from the 36h11 family
+    /*EDIT IF NEEDED!!!*/
 
     int LEFT = 1;
     int MIDDLE = 2;
@@ -75,10 +75,7 @@ public class AutonTemplate extends LinearOpMode
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -205,7 +202,7 @@ public class AutonTemplate extends LinearOpMode
         //PUT AUTON CODE HERE (DRIVER PRESSED THE PLAY BUTTON!)
         waitForStart();
 
-        
+
     }
 
     void tagToTelemetry(AprilTagDetection detection)
@@ -221,20 +218,14 @@ public class AutonTemplate extends LinearOpMode
     void moveToSpot(String dir) {
         if (dir.equals("left")) {
             telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
-
-
         }
         else if (dir.equals("right")) {
             telemetry.addLine("The april tag found is 3, saying to park in the right parking spot");
-
         }
         //change to else after testing for any errors
         else if (dir.equals("middle")) {
             telemetry.addLine("The april tag found is 2, saying to park in the middle parking spot");
-            frontRight;
-            frontLeft;
-            backRight;
-            backLeft;
+
         }
         else {
             System.out.println("Something went wrong, here is the string sent: ");
