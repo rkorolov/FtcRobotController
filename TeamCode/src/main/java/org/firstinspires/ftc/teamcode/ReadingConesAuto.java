@@ -34,7 +34,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @TeleOp
-public class AutonTemplate extends LinearOpMode
+public class ReadingConesAuto extends LinearOpMode
 {   
     //INTRODUCE VARIABLES HERE
     private DcMotor frontRight;
@@ -219,10 +219,6 @@ public class AutonTemplate extends LinearOpMode
         //change to else after testing for any errors
         else if (dir.equals("middle")) {
             telemetry.addLine("The april tag found is 2, saying to park in the middle parking spot");
-            frontRight;
-            frontLeft;
-            backRight;
-            backLeft;
         }
         else {
             System.out.println("Something went wrong, here is the string sent: ");

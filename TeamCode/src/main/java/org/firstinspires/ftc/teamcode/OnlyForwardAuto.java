@@ -34,15 +34,23 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @TeleOp
-public class AutonTemplate extends LinearOpMode
+public class OnlyForwardAuto extends LinearOpMode
 {   
     //INTRODUCE VARIABLES HERE
     private DcMotor frontRight;
     private DcMotor frontLeft;
     private DcMotor backRight;
     private DcMotor backLeft;
-
-
+    int origin = frontRight.getCurrentPosition();
+    int position = origin;
+    while ((position - origin) > -1200){
+        position = frontRight.getCurrentPosition();
+        frontRight.setPower(-0.5);
+        frontLeft.setPower(-0.5);
+        backRight.setPower(-0.5);
+        backLeft.setPower(-0.5);
+}
+    /*
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -61,7 +69,7 @@ public class AutonTemplate extends LinearOpMode
     double tagsize = 0.166;
 
      // Tag ID 1,2,3 from the 36h11 family 
-     /*EDIT IF NEEDED!!!*/
+     EDIT IF NEEDED!!!
 
     int LEFT = 1;
     int MIDDLE = 2;
@@ -98,10 +106,11 @@ public class AutonTemplate extends LinearOpMode
         //HARDWARE MAPPING HERE etc.
 
 
-        /*
-         * The INIT-loop:
-         * This REPLACES waitForStart!
-         */
+
+          The INIT-loop:
+          This REPLACES waitForStart!
+        */
+    /*
         while (!isStarted() && !isStopRequested())
         {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -228,5 +237,5 @@ public class AutonTemplate extends LinearOpMode
             System.out.println("Something went wrong, here is the string sent: ");
             System.out.println(dir);
         }
-    }
+    }*/
 }
