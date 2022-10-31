@@ -223,6 +223,8 @@ public class AutonTemplate extends LinearOpMode
             telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
 
 
+
+
         }
         else if (dir.equals("right")) {
             telemetry.addLine("The april tag found is 3, saying to park in the right parking spot");
@@ -231,14 +233,33 @@ public class AutonTemplate extends LinearOpMode
         //change to else after testing for any errors
         else if (dir.equals("middle")) {
             telemetry.addLine("The april tag found is 2, saying to park in the middle parking spot");
-            /*frontRight;
-            frontLeft;
-            backRight;
-            backLeft;*/
+
+            moveForward(-1220); //might need to switch sign
+            //moving backwards
+
         }
         else {
             System.out.println("Something went wrong, here is the string sent: ");
             System.out.println(dir);
         }
+    }
+
+    void moveForward(int encoders) {
+        int origin = frontRight.getCurrentPosition();
+        int position = origin;
+        int target = encoders; //move however many encoders
+
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+
+
+        while ((position - origin) > target) {
+            position = frontRight.getCurrentPosition();
+            frontRight.setPower(-0.5);
+            frontLeft.setPower(-0.5);
+            backRight.setPower(-0.5);
+            backLeft.setPower(-0.5);
     }
 }
