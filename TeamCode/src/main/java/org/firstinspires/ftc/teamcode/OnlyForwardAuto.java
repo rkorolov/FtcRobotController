@@ -21,8 +21,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -33,22 +33,40 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@TeleOp
-public class OnlyForwardAuto extends LinearOpMode
-{   
+@Autonomous
+public class OnlyForwardAuto extends LinearOpMode {
     //INTRODUCE VARIABLES HERE
     private DcMotor frontRight;
     private DcMotor frontLeft;
     private DcMotor backRight;
     private DcMotor backLeft;
-    int origin = frontRight.getCurrentPosition();
-    int position = origin;
-    while ((position - origin) > -1200){
-        position = frontRight.getCurrentPosition();
-        frontRight.setPower(-0.5);
-        frontLeft.setPower(-0.5);
-        backRight.setPower(-0.5);
-        backLeft.setPower(-0.5);
+
+
+    //int origin = frontRight.getCurrentPosition();
+    //int position = origin;
+    //int target = 1200;
+
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        int origin = frontRight.getCurrentPosition();
+        int position = origin;
+        int target = -1200;
+
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+
+
+        while ((position - origin) > target) {
+            position = frontRight.getCurrentPosition();
+            frontRight.setPower(-0.5);
+            frontLeft.setPower(-0.5);
+            backRight.setPower(-0.5);
+            backLeft.setPower(-0.5);
+        }
+    }
 }
     /*
     OpenCvCamera camera;
@@ -238,4 +256,3 @@ public class OnlyForwardAuto extends LinearOpMode
             System.out.println(dir);
         }
     }*/
-}
