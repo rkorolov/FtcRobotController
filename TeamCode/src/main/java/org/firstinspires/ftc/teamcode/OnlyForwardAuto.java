@@ -34,12 +34,6 @@ public class OnlyForwardAuto extends LinearOpMode {
     private DcMotor backRight;
     private DcMotor backLeft;
 
-
-    //int origin = frontRight.getCurrentPosition();
-    //int position = origin;
-    //int target = 1200;
-
-
     @Override
     public void runOpMode() throws InterruptedException {
         int origin = frontRight.getCurrentPosition();
