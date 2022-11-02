@@ -42,7 +42,9 @@ public class AutonTemplate extends LinearOpMode
     private DcMotor backRight;
     private DcMotor backLeft;
 
-
+    int origin;
+    int position;
+    int targetY = -1200;
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -219,6 +221,15 @@ public class AutonTemplate extends LinearOpMode
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
     void moveToSpot(String dir) {
+        origin = frontRight.getCurrentPosition();
+        position = frontRight.getCurrentPosition();
+        while(position > targetY){
+            frontRight.setPower(-0.5);
+            frontLeft.setPower(-0.5);
+            backRight.setPower(-0.5);
+            backLeft.setPower(-0.5);
+            position = frontRight.getCurrentPosition();
+        }
         if (dir.equals("left")) {
             telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
 
@@ -231,10 +242,6 @@ public class AutonTemplate extends LinearOpMode
         //change to else after testing for any errors
         else if (dir.equals("middle")) {
             telemetry.addLine("The april tag found is 2, saying to park in the middle parking spot");
-            /*frontRight;
-            frontLeft;
-            backRight;
-            backLeft;*/
         }
         else {
             System.out.println("Something went wrong, here is the string sent: ");
