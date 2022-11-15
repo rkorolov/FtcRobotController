@@ -24,6 +24,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
@@ -223,6 +224,7 @@ public class AutonTemplate extends LinearOpMode
     void moveToSpot(String dir) {
         origin = frontRight.getCurrentPosition();
         position = frontRight.getCurrentPosition();
+        ElapsedTime runTime = new ElapsedTime();
         while(position > targetY){
             frontRight.setPower(-0.5);
             frontLeft.setPower(-0.5);
@@ -232,6 +234,8 @@ public class AutonTemplate extends LinearOpMode
         }
         if (dir.equals("left")) {
             telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
+
+
 
 
         }
@@ -246,6 +250,26 @@ public class AutonTemplate extends LinearOpMode
         else {
             System.out.println("Something went wrong, here is the string sent: ");
             System.out.println(dir);
+        }
+    }
+
+    void moveForward(int encoders) {
+        int origin = frontRight.getCurrentPosition();
+        int position = origin;
+        int target = encoders; //move however many encoders
+
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+
+
+        while ((position - origin) > target) {
+            position = frontRight.getCurrentPosition();
+            frontRight.setPower(-0.5);
+            frontLeft.setPower(-0.5);
+            backRight.setPower(-0.5);
+            backLeft.setPower(-0.5);
         }
     }
 }
