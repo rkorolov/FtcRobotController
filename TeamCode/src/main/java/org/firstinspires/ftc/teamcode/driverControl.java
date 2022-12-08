@@ -84,6 +84,19 @@ public class driverControl extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
+            if(gamepad1.dpad_left){
+                frontLeftPower += -0.1;
+                backLeftPower += -0.1;
+                frontRightPower += 0.1;
+                backRightPower += 0.1;
+            }
+            if(gamepad1.dpad_right){
+                frontLeftPower += 0.1;
+                backLeftPower += 0.1;
+                frontRightPower += -0.1;
+                backRightPower += -0.1;
+            }
+
             //*0.5 to set more reasonable speed
             frontRight.setPower(frontRightPower*0.5);
             frontLeft.setPower(frontLeftPower*0.5);

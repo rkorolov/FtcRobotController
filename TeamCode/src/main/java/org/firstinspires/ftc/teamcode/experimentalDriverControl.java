@@ -4,15 +4,21 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+import org.openftc.easyopencv.OpenCvCamera;
+
+
+
+/*import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCamera;*/
 
 @TeleOp
-public class driverControl extends LinearOpMode {
+public class experimentalDriverControl extends LinearOpMode {
 
     //initialize motors
     private DcMotor frontRight;
@@ -35,17 +41,17 @@ public class driverControl extends LinearOpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
 
         //double check which motors are reversed, assumption is right-side
-        /*
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+    /*
+    frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+    frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-         */
+     */
 
         telemetry.addLine("Initialized");
 
@@ -84,6 +90,42 @@ public class driverControl extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
+            if(gamepad1.dpad_left){
+                frontLeftPower += -0.1;
+                backLeftPower += -0.1;
+                frontRightPower += 0.1;
+                backRightPower += 0.1;
+            }
+            if(gamepad1.dpad_right){
+                frontLeftPower += 0.1;
+                backLeftPower += 0.1;
+                frontRightPower += -0.1;
+                backRightPower += -0.1;
+            }
+            if(gamepad1.dpad_up){
+                frontLeftPower += 0.1;
+                backLeftPower += 0.1;
+                frontRightPower += 0.1;
+                backRightPower += 0.1;
+            }
+            if(gamepad1.dpad_down){
+                frontLeftPower += -0.1;
+                backLeftPower += -0.1;
+                frontRightPower += -0.1;
+                backRightPower += -0.1;
+            }
+            if(gamepad1.right_bumper){
+                frontLeftPower += 1.6;
+                backLeftPower += 1.6;
+                frontRightPower += 1.6;
+                backRightPower += 1.6;
+            }
+            if(gamepad1.left_bumper){
+                frontLeftPower += -1.6;
+                backLeftPower += -1.6;
+                frontRightPower += -1.6;
+                backRightPower += -1.6;
+            }
             //*0.5 to set more reasonable speed
             frontRight.setPower(frontRightPower*0.5);
             frontLeft.setPower(frontLeftPower*0.5);
@@ -99,7 +141,7 @@ public class driverControl extends LinearOpMode {
             telemetry.addData("Speed", "%7d",
                     frontRight.getPower(),
                     backRight.getPower()
-                    );
+            );
             telemetry.update();
         }
     }
