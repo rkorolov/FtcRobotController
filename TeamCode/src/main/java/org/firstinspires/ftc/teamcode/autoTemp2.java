@@ -38,8 +38,8 @@ import java.util.ArrayList;
 //@Autonomous
 @TeleOp
 //@Disabled
-public class AutonTemplate extends LinearOpMode
-{   
+public class autoTemp2 extends LinearOpMode
+{
     //INTRODUCE VARIABLES HERE
     private DcMotor frontRight;
     private DcMotor frontLeft;
@@ -67,8 +67,8 @@ public class AutonTemplate extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-     // Tag ID 1,2,3 from the 36h11 family 
-     /*EDIT IF NEEDED!!!*/
+    // Tag ID 1,2,3 from the 36h11 family
+    /*EDIT IF NEEDED!!!*/
 
     int LEFT = 1;
     int MIDDLE = 2;
@@ -206,7 +206,7 @@ public class AutonTemplate extends LinearOpMode
         }
 
         //PUT AUTON CODE HERE (DRIVER PRESSED THE PLAY BUTTON!)
-        
+
     }
 
     void tagToTelemetry(AprilTagDetection detection)
@@ -246,11 +246,12 @@ public class AutonTemplate extends LinearOpMode
 
         origin = frontRight.getCurrentPosition();
         position = frontRight.getCurrentPosition();
+
         if (dir.equals("left")) {
             telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
             while ((Math.abs(position) - Math.abs(origin)) < (1100)){
                 position = frontRight.getCurrentPosition()-200;
-                double value = Math.abs(position - origin);
+                double value = Math.abs(position) - Math.abs(origin);
                 telemetry.addLine(String.valueOf(value));
                 telemetry.update();
                 frontRight.setPower(0.5);
@@ -265,10 +266,13 @@ public class AutonTemplate extends LinearOpMode
         }
         else if (dir.equals("right")) {
             telemetry.addLine("The april tag found is 3, saying to park in the right parking spot");
-            while ((Math.abs(origin) - Math.abs(position)) < (1100)){
-                position = frontRight.getCurrentPosition();
-                double value = Math.abs(position - origin);
+            while (position - origin > (-1100)){
+                position = frontRight.getCurrentPosition()+100;
+
+                double value = position - origin;
                 telemetry.addLine(String.valueOf(value));
+                telemetry.addLine(String.valueOf(origin));
+                telemetry.addLine(String.valueOf(position));
                 telemetry.update();
                 frontRight.setPower(-0.5);
                 frontLeft.setPower(0.5);

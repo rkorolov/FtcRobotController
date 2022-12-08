@@ -64,7 +64,7 @@ public class driverControl extends LinearOpMode {
          */
 
 
-
+        telemetry.addLine("Init Done");
 
         telemetry.update();
 
@@ -115,19 +115,19 @@ public class driverControl extends LinearOpMode {
             backLeft.setPower(backLeftPower*0.5);
 
             //last line
-            telemetry.addData("At Position",  "%7d :%7d",
-                    frontLeft.getCurrentPosition(),
-
-                    backRight.getCurrentPosition());
+            telemetry.addData("Front Right Position",
+                    //frontLeft.getCurrentPosition(),
+                    frontRight.getCurrentPosition());
+                    //backRight.getCurrentPosition());
 
 
 
             telemetry.addData("Front Right Speed",
                     frontRight.getPower());
-            telemetry.addData("Back Right Speed",
-                    backRight.getPower());
             telemetry.addData("Front Left Speed",
                     frontLeft.getPower());
+            telemetry.addData("Back Right Speed",
+                    backRight.getPower());
             telemetry.addData("Back Left Speed",
                     backLeft.getPower());
 

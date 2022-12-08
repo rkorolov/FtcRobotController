@@ -19,7 +19,10 @@
  * SOFTWARE.
  */
 
+
 package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.CvType;
@@ -36,7 +39,7 @@ import org.openftc.apriltag.AprilTagDetectorJNI;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
-
+@Disabled
 class AprilTagDetectionPipeline extends OpenCvPipeline
 {
     private long nativeApriltagPtr;
