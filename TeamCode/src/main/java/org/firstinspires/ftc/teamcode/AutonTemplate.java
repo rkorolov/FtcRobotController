@@ -26,6 +26,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
@@ -38,8 +39,7 @@ import java.util.ArrayList;
 //@Autonomous
 @TeleOp
 //@Disabled
-public class AutonTemplate extends LinearOpMode
-{   
+public class AutonTemplate extends LinearOpMode {
     //INTRODUCE VARIABLES HERE
     private DcMotor frontRight;
     private DcMotor frontLeft;
@@ -48,8 +48,12 @@ public class AutonTemplate extends LinearOpMode
 
     int origin;
     int position;
-    double targetY = 1200.0;
+
+    //double targetY = 1200.0;
     double targetX = 1000.0;
+
+    int targetY = -1200;
+
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
@@ -67,8 +71,8 @@ public class AutonTemplate extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166;
 
-     // Tag ID 1,2,3 from the 36h11 family 
-     /*EDIT IF NEEDED!!!*/
+    // Tag ID 1,2,3 from the 36h11 family
+    /*EDIT IF NEEDED!!!*/
 
     int LEFT = 1;
     int MIDDLE = 2;
@@ -77,24 +81,24 @@ public class AutonTemplate extends LinearOpMode
     AprilTagDetection tagOfInterest = null;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
 
         camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                camera.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
 
             }
         });
@@ -112,73 +116,57 @@ public class AutonTemplate extends LinearOpMode
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
-        while (!isStarted() && !isStopRequested())
-        {
+        //moves on INIT
+        while (!isStarted() && !isStopRequested()) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
             String direction;
 
-            if(currentDetections.size() != 0)
-            {
+
+            if (currentDetections.size() != 0) {
                 boolean tagFound = false;
 
-                for(AprilTagDetection tag : currentDetections)
-                {
-                    if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
-                    {
+                for (AprilTagDetection tag : currentDetections) {
+                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
                         tagOfInterest = tag;
                         tagFound = true;
                         break;
                     }
                 }
 
-                if(tagFound)
-                {
+                if (tagFound) {
                     telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
 
 
                     //send detection info to movement commands
                     if (tagOfInterest.id == LEFT) {
+                        direction = "left";
                         moveToSpot("left");
-                    }
-                    else if (tagOfInterest.id == RIGHT) {
+                    } else if (tagOfInterest.id == RIGHT) {
                         moveToSpot("right");
-                    }
-                    else if (tagOfInterest.id == MIDDLE) {
+                    } else if (tagOfInterest.id == MIDDLE) {
                         moveToSpot("middle");
-                    }
-                    else {
+                    } else {
                         moveToSpot("error, tag id not found");
                     }
-                }
-                else
-                {
+                } else {
                     telemetry.addLine("Don't see tag of interest :(");
 
-                    if(tagOfInterest == null)
-                    {
+                    if (tagOfInterest == null) {
                         telemetry.addLine("(The tag has never been seen)");
-                    }
-                    else
-                    {
+                    } else {
                         telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
                         tagToTelemetry(tagOfInterest);
                     }
                 }
 
 
-
-            }
-            else
-            {
+            } else {
                 telemetry.addLine("Don't see tag of interest :(");
 
-                if(tagOfInterest == null)
-                {
+                if (tagOfInterest == null) {
                     telemetry.addLine("(The tag has never been seen)");
-                }
-                else
-                {
+                } else {
                     telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
                     tagToTelemetry(tagOfInterest);
                 }
@@ -190,36 +178,33 @@ public class AutonTemplate extends LinearOpMode
         }
 
 
-
-
-
-        if(tagOfInterest != null)
-        {
+        if (tagOfInterest != null) {
             telemetry.addLine("Tag snapshot:\n");
             tagToTelemetry(tagOfInterest);
             telemetry.update();
-        }
-        else
-        {
+        } else {
             telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
             telemetry.update();
         }
 
         //PUT AUTON CODE HERE (DRIVER PRESSED THE PLAY BUTTON!)
-        
+        waitForStart();
+
+
     }
 
-    void tagToTelemetry(AprilTagDetection detection)
-    {
+    void tagToTelemetry(AprilTagDetection detection) {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
+        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x * FEET_PER_METER));
+        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y * FEET_PER_METER));
+        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z * FEET_PER_METER));
         telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
+
     void moveToSpot(String dir) {
+
 
         origin = frontRight.getCurrentPosition();
         position = frontRight.getCurrentPosition();
@@ -232,7 +217,7 @@ public class AutonTemplate extends LinearOpMode
             frontLeft.setPower(0.5);
             backRight.setPower(-0.5);
             backLeft.setPower(-0.5);
-            telemetry.addData("At Position",  "%7d :%7d",
+            telemetry.addData("At Position", "%7d :%7d",
                     frontRight.getCurrentPosition(),
 
                     backRight.getCurrentPosition());
@@ -248,8 +233,8 @@ public class AutonTemplate extends LinearOpMode
         position = frontRight.getCurrentPosition();
         if (dir.equals("left")) {
             telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
-            while ((Math.abs(position) - Math.abs(origin)) < (1100)){
-                position = frontRight.getCurrentPosition()-200;
+            while ((Math.abs(position) - Math.abs(origin)) < (1100)) {
+                position = frontRight.getCurrentPosition() - 200;
                 double value = Math.abs(position - origin);
                 telemetry.addLine(String.valueOf(value));
                 telemetry.update();
@@ -262,10 +247,9 @@ public class AutonTemplate extends LinearOpMode
             frontLeft.setPower(0);
             backRight.setPower(0);
             backLeft.setPower(0);
-        }
-        else if (dir.equals("right")) {
+        } else if (dir.equals("right")) {
             telemetry.addLine("The april tag found is 3, saying to park in the right parking spot");
-            while ((Math.abs(origin) - Math.abs(position)) < (1100)){
+            while ((Math.abs(origin) - Math.abs(position)) < (1100)) {
                 position = frontRight.getCurrentPosition();
                 double value = Math.abs(position - origin);
                 telemetry.addLine(String.valueOf(value));
@@ -279,17 +263,57 @@ public class AutonTemplate extends LinearOpMode
             frontLeft.setPower(0);
             backRight.setPower(0);
             backLeft.setPower(0);
+
+            origin = frontRight.getCurrentPosition();
+            position = frontRight.getCurrentPosition();
+            ElapsedTime runTime = new ElapsedTime();
+            while (position > targetY) {
+                frontRight.setPower(-0.5);
+                frontLeft.setPower(-0.5);
+                backRight.setPower(-0.5);
+                backLeft.setPower(-0.5);
+                position = frontRight.getCurrentPosition();
+            }
+            if (dir.equals("left")) {
+                telemetry.addLine("The april tag found is 1, saying to park in the left parking spot");
+
+
+            } else if (dir.equals("right")) {
+                telemetry.addLine("The april tag found is 3, saying to park in the right parking spot");
+
+
+            }
+            //change to else after testing for any errors
+            else if (dir.equals("middle")) {
+                telemetry.addLine("The april tag found is 2, saying to park in the middle parking spot");
+
+            } else {
+                System.out.println("Something went wrong, here is the string sent: ");
+                System.out.println(dir);
+
+
+            }
         }
-        //change to else after testing for any errors
-        else if (dir.equals("middle")) {
-            telemetry.addLine("The april tag found is 2, saying to park in the middle parking spot");
-
-        }
-        else {
-            System.out.println("Something went wrong, here is the string sent: ");
-            System.out.println(dir);
 
 
+    }
+    void moveForward ( int encoders){
+        int origin = frontRight.getCurrentPosition();
+        int position = origin;
+        int target = encoders; //move however many encoders
+
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+
+
+        while ((position - origin) > target) {
+            position = frontRight.getCurrentPosition();
+            frontRight.setPower(-0.5);
+            frontLeft.setPower(-0.5);
+            backRight.setPower(-0.5);
+            backLeft.setPower(-0.5);
         }
     }
 }

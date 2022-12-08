@@ -41,6 +41,7 @@ public class driverControl extends LinearOpMode {
 
 
         //double check which motors are reversed, assumption is right-side
+        /*
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -55,13 +56,17 @@ public class driverControl extends LinearOpMode {
         frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+<<<<<<< HEAD
         telemetry.addData("Starting at",  "%7d :%7d",
                 frontLeft.getCurrentPosition(),
                 backLeft.getCurrentPosition(),
                 frontRight.getCurrentPosition(),
                 backRight.getCurrentPosition());
-
+=======
          */
+
+        telemetry.addLine("Initialized");
+
 
 
         telemetry.addLine("Init Done");
@@ -99,6 +104,7 @@ public class driverControl extends LinearOpMode {
 
 
 
+
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
             // at least one is out of the range [-1, 1]
@@ -107,6 +113,19 @@ public class driverControl extends LinearOpMode {
              backLeftPower = (y - x + rx) / denominator;
              frontRightPower = (y - x - rx) / denominator;
              backRightPower = (y + x - rx) / denominator;
+
+            if(gamepad1.dpad_left){
+                frontLeftPower += -0.1;
+                backLeftPower += -0.1;
+                frontRightPower += 0.1;
+                backRightPower += 0.1;
+            }
+            if(gamepad1.dpad_right){
+                frontLeftPower += 0.1;
+                backLeftPower += 0.1;
+                frontRightPower += -0.1;
+                backRightPower += -0.1;
+            }
 
             //*0.5 to set more reasonable speed
             frontRight.setPower(frontRightPower*0.5);
