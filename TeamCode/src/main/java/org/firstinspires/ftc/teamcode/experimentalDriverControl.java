@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorDigitalTouch;
 import org.openftc.easyopencv.OpenCvCamera;
 
 
@@ -29,6 +31,8 @@ public class experimentalDriverControl extends LinearOpMode {
     private DcMotor armControl;
     private Servo grabberControl;
 
+    private TouchSensor touchSensor;
+
     //init sensors/camera
     OpenCvCamera camera;
 
@@ -45,6 +49,8 @@ public class experimentalDriverControl extends LinearOpMode {
 
         armControl = hardwareMap.get(DcMotor.class, "armControl");
         grabberControl = hardwareMap.get(Servo.class, "grabberControl");
+
+        touchSensor = hardwareMap.get(TouchSensor.class, "touchSensor");
 
         double frontLeftPower;
         double backLeftPower;
@@ -170,6 +176,10 @@ public class experimentalDriverControl extends LinearOpMode {
                 grabberControl.setPosition(0);
             }
 
+            if (touchSensor.isPressed()) {
+                telemetry.addLine("Cone Aligned = True");
+            }
+
             //*0.5 to set more reasonable speed
             frontRight.setPower(frontRightPower*0.5);
             frontLeft.setPower(frontLeftPower*0.5);
@@ -186,7 +196,7 @@ public class experimentalDriverControl extends LinearOpMode {
             //backRight.getCurrentPosition());
 
 
-
+            telemetry.addData("Touch Sensor Pressed: ", touchSensor.isPressed());
             telemetry.addData("Front Right Speed",
                     frontRight.getPower());
             telemetry.addData("Front Left Speed",
