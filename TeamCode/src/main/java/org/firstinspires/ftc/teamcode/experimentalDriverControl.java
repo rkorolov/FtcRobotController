@@ -28,9 +28,10 @@ public class experimentalDriverControl extends LinearOpMode {
     private DcMotor frontLeft;
     private DcMotor backRight;
     private DcMotor backLeft;
-    
+
 
     private DcMotor armControl;
+    private DcMotor linSlide;
     private Servo grabberControl;
 
     private TouchSensor touchSensor;
@@ -48,6 +49,8 @@ public class experimentalDriverControl extends LinearOpMode {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+
+        linSlide = hardwareMap.get(DcMotor.class, "linSlide");
 
         armControl = hardwareMap.get(DcMotor.class, "armControl");
         grabberControl = hardwareMap.get(Servo.class, "grabberControl");
@@ -101,26 +104,22 @@ public class experimentalDriverControl extends LinearOpMode {
 
 
 
-            // Things to Change;
-            //
 
-            //Original Code
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
-            //test
+
+
+           double up = gamepad2.right_trigger;
+           double down = gamepad2.left_trigger;
+
+           double armPower = up - down;
+           linSlide.setPower(armPower);
 
 
 
 
-       /*
-       if(gamepad1.a == true){
-           while(variable for posistion x > value for range || x < value for range){
-               set power of wheels such that the robot will strafe left or right based on position
-           }
-           repeat while loop for y position
-       }
-       */
+
 
 
 
@@ -170,7 +169,10 @@ public class experimentalDriverControl extends LinearOpMode {
                 frontRightPower += -1.6;
                 backRightPower += -1.6;
             }
-            armControlPower = gamepad2.right_trigger-gamepad2.left_trigger;
+
+
+
+
             if(gamepad2.x && grabberControl.getPosition() != 1){
                 grabberControl.setPosition(.7);
             }
