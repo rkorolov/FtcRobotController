@@ -113,7 +113,7 @@ public class experimentalDriverControl extends LinearOpMode {
            double up = gamepad2.right_trigger;
            double down = gamepad2.left_trigger;
 
-           double armPower = up - down;
+           double armPower = -(up - down);
            linSlide.setPower(armPower);
 
 
