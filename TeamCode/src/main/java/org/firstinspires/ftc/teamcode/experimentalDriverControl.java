@@ -31,10 +31,10 @@ public class experimentalDriverControl extends LinearOpMode {
 
 
     private DcMotor armControl;
-    private DcMotor linSlide;
+
     private Servo grabberControl;
 
-    private TouchSensor touchSensor;
+    //private TouchSensor touchSensor;
 
     //init sensors/camera
     OpenCvCamera camera;
@@ -50,23 +50,21 @@ public class experimentalDriverControl extends LinearOpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
 
-        linSlide = hardwareMap.get(DcMotor.class, "linSlide");
+
 
         armControl = hardwareMap.get(DcMotor.class, "armControl");
         grabberControl = hardwareMap.get(Servo.class, "grabberControl");
 
-        touchSensor = hardwareMap.get(TouchSensor.class, "touchSensor");
+        //touchSensor = hardwareMap.get(TouchSensor.class, "touchSensor");
 
         double frontLeftPower;
         double backLeftPower;
         double frontRightPower;
         double backRightPower;
 
-
-
-        float armControlPower = 0;
         float grabberControlPower = 0;
 
+        int baseArmHeight = armControl.getCurrentPosition();
 
         //double check which motors are reversed, assumption is right-side
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -109,12 +107,15 @@ public class experimentalDriverControl extends LinearOpMode {
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
 
+            double up = 0;
+            double down = 0;
+           up = gamepad2.right_trigger;
+           if(armControl.getCurrentPosition() >= baseArmHeight + 50) {
+               down = gamepad2.left_trigger;
+           }
 
-           double up = gamepad2.right_trigger;
-           double down = gamepad2.left_trigger;
-
-           double armPower = -(up - down);
-           linSlide.setPower(armPower);
+           double armPower = up - down;
+           armControl.setPower(armPower);
 
 
 
@@ -174,23 +175,21 @@ public class experimentalDriverControl extends LinearOpMode {
 
 
             if(gamepad2.x && grabberControl.getPosition() != 1){
-                grabberControl.setPosition(.7);
+                grabberControl.setPosition(.8);
             }
             if(gamepad2.a && grabberControl.getPosition() != 0){
-                grabberControl.setPosition(0);
+                grabberControl.setPosition(0.1);
             }
 
-            if (touchSensor.isPressed()) {
+            /*if (touchSensor.isPressed()) {
                 telemetry.addLine("Cone Aligned = True");
-            }
+            }*/
 
             //*0.5 to set more reasonable speed
             frontRight.setPower(frontRightPower*0.5);
             frontLeft.setPower(frontLeftPower*0.5);
             backRight.setPower(backRightPower*0.5);
             backLeft.setPower(backLeftPower*0.5);
-
-            armControl.setPower(armControlPower);
 
 
             //last line
@@ -200,7 +199,7 @@ public class experimentalDriverControl extends LinearOpMode {
             //backRight.getCurrentPosition());
 
 
-            telemetry.addData("Touch Sensor Pressed: ", touchSensor.isPressed());
+            //telemetry.addData("Touch Sensor Pressed: ", touchSensor.isPressed());
             telemetry.addData("Front Right Speed",
                     frontRight.getPower());
             telemetry.addData("Front Left Speed",
@@ -211,6 +210,11 @@ public class experimentalDriverControl extends LinearOpMode {
                     backLeft.getPower());
             telemetry.addData("Arm Control Speed",
                     armControl.getPower());
+
+            telemetry.addData("ArmControlBaseHeight",
+                    baseArmHeight);
+            telemetry.addData("ArmControlPosition",
+                    armControl.getCurrentPosition());
 
             telemetry.addLine("updated");
 
