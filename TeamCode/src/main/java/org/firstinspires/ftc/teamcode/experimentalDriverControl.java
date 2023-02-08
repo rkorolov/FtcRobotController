@@ -109,12 +109,18 @@ public class experimentalDriverControl extends LinearOpMode {
 
             double up = 0;
             double down = 0;
+            double manualControl = 0;
            up = gamepad2.right_trigger;
            if(armControl.getCurrentPosition() >= baseArmHeight + 50) {
                down = gamepad2.left_trigger;
            }
-
-           double armPower = up - down;
+           if(gamepad2.dpad_down){
+               manualControl = -0.2;
+           }
+           if(gamepad2.dpad_up) {
+               manualControl = 0.2;
+           }
+           double armPower = up - down + manualControl;
            armControl.setPower(armPower);
 
 
