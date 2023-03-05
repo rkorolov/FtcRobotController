@@ -120,7 +120,7 @@ public class experimentalDriverControl extends LinearOpMode {
            if(gamepad2.dpad_up) {
                manualControl = 0.2;
            }
-           double armPower = up - down + manualControl;
+           double armPower = (up - down + manualControl);
            armControl.setPower(armPower);
 
 
