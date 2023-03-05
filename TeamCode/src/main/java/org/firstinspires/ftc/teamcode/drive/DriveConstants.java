@@ -99,6 +99,11 @@ public class DriveConstants {
      * https://github.com/acmerobotics/road-runner-quickstart/issues/91
 
      */
+    public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
+            RevHubOrientationOnRobot.LogoFacingDirection.UP;
+    public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
+            RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+    
     public static double MAX_VEL = 90;
     public static double MAX_ACCEL = 90;
     public static double MAX_ANG_VEL = Math.toRadians(313.9494767840127);
